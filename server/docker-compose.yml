@@ -1,0 +1,19 @@
+  
+version: "3"
+services:
+  zeronet:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 8000:8000
+    expose:
+      - "8000"
+    environment:
+      - ZERONET_ENVIRONMENT=dev
+      - ZERONET_ENDPOINT=http://localhost:8000
+    networks:
+      - net
+
+networks:
+  net:
