@@ -12,8 +12,23 @@ services:
     environment:
       - ZERONET_ENVIRONMENT=dev
       - ZERONET_ENDPOINT=http://localhost:8000
+    depends_on:
+      - mongo
     networks:
       - net
 
+  mongo:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_DATABASE: zeronet
+      MONGO_INITDB_ROOT_USERNAME: zero
+      MONGO_INITDB_ROOT_PASSWORD: zeropassword
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data_container:/data/db
+
+volumes:
+  mongodb_data_container:
 networks:
   net:
