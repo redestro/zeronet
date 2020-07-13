@@ -4,16 +4,15 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/shubhamgupta2956/zeronet/server/pkg/sessions"
+
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/cors"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
 //InitRoutes exports the router
-func InitRoutes(client *mongo.Client) *chi.Mux {
-	db := client.Database("zeronet")
-
+func InitRoutes(db *sessions.Database) *chi.Mux {
 	r := chi.NewRouter()
 	cors := cors.New(cors.Options{
 		AllowedMethods:   []string{"GET", "POST", "PUT", "OPTIONS"},
@@ -34,12 +33,8 @@ func InitRoutes(client *mongo.Client) *chi.Mux {
 	})
 
 	r.Route("/start", func(r chi.Router) {
-		r.Get("/human", func(w http.ResponseWriter, r *http.Request) {
-			StartHuman(w, r, db)
-		})
-		r.Get("/ai", func(w http.ResponseWriter, r *http.Request) {
-			StartAI(w, r, db)
-		})
+		r.Get("/human", StartHuman)
+		r.Get("/ai", StartAI)
 	})
 	return r
 }

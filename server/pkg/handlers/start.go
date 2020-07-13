@@ -1,26 +1,24 @@
 package handlers
 
 import (
+	"encoding/json"
 	"net/http"
-	"time"
 
-	"github.com/shubhamgupta2956/zeronet/server/pkg/players"
-
-	"github.com/shubhamgupta2956/zeronet/server/pkg/utils"
-	"go.mongodb.org/mongo-driver/mongo"
+	"github.com/shubhamgupta2956/zeronet/server/pkg/sessions"
 )
 
 // StartHuman starts session for human player vs AI
-func StartHuman(w http.ResponseWriter, r *http.Request, db *mongo.Database) {
-	// session := sessions.Create(db, "human")
-	// res, _ := json.Marshal(session)
-	token := utils.Token(time.Now().Format(time.RFC850))
-	human := players.InitHuman(token)
-	human.Play()
-	w.Write([]byte("human"))
+func StartHuman(w http.ResponseWriter, r *http.Request) {
+	db := sessions.GetDB()
+	session := sessions.Create(db, "human", 4, 0)
+	res, _ := json.Marshal(session)
+	w.Write([]byte(res))
 }
 
 // StartAI starts session for AI vs AI
-func StartAI(w http.ResponseWriter, r *http.Request, db *mongo.Database) {
-	w.Write([]byte("AI"))
+func StartAI(w http.ResponseWriter, r *http.Request) {
+	db := sessions.GetDB()
+	session := sessions.Create(db, "ai", 4, 4)
+	res, _ := json.Marshal(session)
+	w.Write([]byte(res))
 }
