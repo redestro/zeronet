@@ -9,7 +9,9 @@ require (
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/hashicorp/go-memdb v1.2.1
 	github.com/jinzhu/gorm v1.9.14
+	github.com/json-iterator/go v1.1.9
 	github.com/spf13/viper v1.7.0
 	go.mongodb.org/mongo-driver v1.3.5
+	go.uber.org/zap v1.10.0
 	golang.org/x/crypto v0.0.0-20200709230013-948cd5f35899
 )

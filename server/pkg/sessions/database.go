@@ -2,7 +2,7 @@ package sessions
 
 // Database object to store sessions in memory
 type Database struct {
-	store map[string]*Session
+	Store map[string]*Session
 }
 
 // DB in memory
@@ -10,7 +10,7 @@ var DB Database
 
 // InitDB initializes database
 func InitDB() *Database {
-	DB.store = make(map[string]*Session)
+	DB.Store = make(map[string]*Session)
 	return &DB
 }
 
@@ -21,5 +21,5 @@ func GetDB() *Database {
 
 // AddSession in store
 func (db *Database) AddSession(token string, session *Session) {
-	db.store[token] = session
+	db.Store[token] = session
 }
