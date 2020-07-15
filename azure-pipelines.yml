@@ -1,22 +1,28 @@
 # Go 
 # Build your Go project. 
-resources: 
-    - repo: self 
-    pool:
-       vmImage: 'ubuntu-latest'
-    steps: 
-    - task: GoTool@0
-       inputs:
-         version: 1.14.4
-       displayName: 'Use Go 1.14.4'
-    - task: Go@0
-       displayName: 'go get'
-       inputs:
-         arguments: '-d'
-         workingDirectory: '$(System.DefaultWorkingDirectory)/server'
-    - task: Go@0
-       displayName: 'go build'
-       inputs:
-         command: build
-         arguments: '-o "$(build.repository.name)"'
-         workingDirectory: '$(System.DefaultWorkingDirectory)/server'
+trigger: 
+   - master
+  
+pool:
+   vmImage: 'ubuntu-latest'
+  
+steps: 
+  - task: GoTool@0
+    inputs:
+      version: '1.14.4'
+  - task: Go@0
+    inputs:
+      command: 'get'
+      arguments: '-d'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/server'
+  - task: Go@0
+    inputs:
+      command: 'build'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/server'
+  - task: CopyFiles@2
+    inputs:
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+  - task: PublishBuildArtifacts@1
+    inputs:
+       artifactName: drop
+   
