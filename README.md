@@ -1,1 +1,2 @@
 # tic-tac-toe
+[![Build Status](https://dev.azure.com/achoudhary3/zeronet/_apis/build/status/zeronet?branchName=master)](https://dev.azure.com/achoudhary3/zeronet/_build/latest?definitionId=2&branchName=master)
