@@ -1,7 +1,7 @@
 package players
 
 import (
-	"fmt"
+	"github.com/shubhamgupta2956/zeronet/server/pkg/games"
 )
 
 // Player struct
@@ -17,10 +17,19 @@ type Play interface {
 	Play()
 }
 
+func opponentSymbol(symbol string) string {
+	if symbol == "X" {
+		return "O"
+	} else {
+		return "X"
+	}
+}
+
 //Play implementation for human
 func (player *Player) Play(board [9]string) (int, string) {
-	fmt.Println(player.token) // PLay as AI or give recommendation
-	return 2, player.symbol
+	opponentSymbol := opponentSymbol(player.symbol)
+	move := games.ComputeMove(board, player.symbol, opponentSymbol)
+	return move, player.symbol
 }
 
 // Init creates a new player

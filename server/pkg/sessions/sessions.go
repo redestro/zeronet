@@ -23,7 +23,7 @@ func Create(db *Database, mode string, level1 int, level2 int) *Session {
 	player1Symbol := "O"
 	player2Symbol := "X"
 	emptyMoves := [9]int{0}
-	emptyBoard := [9]string{""}
+	emptyBoard := [9]string{"_", "_", "_", "_", "_", "_", "_", "_", "_"}
 	switch mode {
 	case "human":
 		session := &Session{
