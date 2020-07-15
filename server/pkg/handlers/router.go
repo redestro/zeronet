@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/shubhamgupta2956/zeronet/server/pkg/middlewares"
 	"github.com/shubhamgupta2956/zeronet/server/pkg/sessions"
 
 	"github.com/go-chi/chi"
@@ -39,7 +40,9 @@ func InitRoutes(db *sessions.Database) *chi.Mux {
 		r.Get("/human2/{level1}/{level2}", StartHuman2)
 	})
 	r.Route("/play/{token}", func(r chi.Router) {
-		r.Post("/", Play)
+		r.Use(middlewares.Update)
+		r.Post("/human", PlayHuman)
+		r.Post("/ai", PlayAI)
 	})
 	r.Delete("/session/{token}", DeleteSession)
 	return r

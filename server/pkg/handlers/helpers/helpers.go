@@ -21,3 +21,13 @@ func GetKeyFromRequestParam(r *http.Request, param string) string {
 
 	return keyStr
 }
+
+// ConvertStringToInt returns int value from a string
+func ConvertStringToInt(param string) int {
+	value64, err := strconv.ParseInt(param, 10, 64)
+	value := int(value64)
+	if err != nil {
+		panic(err)
+	}
+	return value
+}

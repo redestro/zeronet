@@ -9,11 +9,12 @@ import (
 
 // Session object
 type Session struct {
-	Token   string    `json:"token"`
-	Moves   [9]int    `json:"moves"`
-	Board   [9]string `json:"board"`
-	Player1 *players.Player
-	Player2 *players.Player
+	Token     string    `json:"token"`
+	Moves     [9]int    `json:"moves"`
+	Board     [9]string `json:"board"`
+	MoveCount int       `json:"moveCount"`
+	Player1   *players.Player
+	Player2   *players.Player
 }
 
 // Create makes a new Session entry in the db
@@ -29,6 +30,7 @@ func Create(db *Database, mode string, level1 int, level2 int) *Session {
 			token,
 			emptyMoves,
 			emptyBoard,
+			0,
 			players.Init(token, "Human", level1, player1Symbol),
 			players.Init(token, "AI", level2, player2Symbol),
 		}
@@ -39,6 +41,7 @@ func Create(db *Database, mode string, level1 int, level2 int) *Session {
 			token,
 			emptyMoves,
 			emptyBoard,
+			0,
 			players.Init(token, "AI", level1, player1Symbol),
 			players.Init(token, "AI", level2, player2Symbol),
 		}
@@ -49,6 +52,7 @@ func Create(db *Database, mode string, level1 int, level2 int) *Session {
 			token,
 			emptyMoves,
 			emptyBoard,
+			0,
 			players.Init(token, "AI", level1, player1Symbol),
 			players.Init(token, "Human", level2, player2Symbol),
 		}
@@ -59,6 +63,7 @@ func Create(db *Database, mode string, level1 int, level2 int) *Session {
 			token,
 			emptyMoves,
 			emptyBoard,
+			0,
 			players.Init(token, "Human", level1, player1Symbol),
 			players.Init(token, "Human", level2, player2Symbol),
 		}
@@ -69,10 +74,19 @@ func Create(db *Database, mode string, level1 int, level2 int) *Session {
 			token,
 			emptyMoves,
 			emptyBoard,
-			players.Init(token, "Human", 4, player1Symbol),
-			players.Init(token, "AI", level1, player2Symbol),
+			0,
+			players.Init(token, "Human", level1, player1Symbol),
+			players.Init(token, "AI", level2, player2Symbol),
 		}
 		db.AddSession(token, session)
 		return session
 	}
+}
+
+// Update updates session status
+func (session *Session) Update(move int, symbol string) {
+	moveCount := session.MoveCount
+	session.Board[move] = symbol
+	session.Moves[moveCount] = move
+	session.MoveCount++
 }

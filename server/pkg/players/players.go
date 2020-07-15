@@ -18,12 +18,9 @@ type Play interface {
 }
 
 //Play implementation for human
-func (player *Player) Play(move int, symbol string) (int, string) {
-	if move == 0 {
-		return move, player.symbol // First move of the game
-	}
-	fmt.Println(player.token) // Update board and moves in db and give recommendation
-	return move, player.symbol
+func (player *Player) Play(board [9]string) (int, string) {
+	fmt.Println(player.token) // PLay as AI or give recommendation
+	return 2, player.symbol
 }
 
 // Init creates a new player
