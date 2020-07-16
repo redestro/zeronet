@@ -1,0 +1,56 @@
+.grid {
+    background-color: #34495e;
+    color: #fff;
+    width: 100%;
+    border-collapse: collapse;
+    border-color: green;
+}
+.gameStatus {
+    margin: 0px;
+    padding: 15px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    background-color: #f1c40f;
+    color: #fff;
+    font-size: 1.4em;
+    font-weight: bold;
+}
+.statusTurn {
+    background-color: #f1c40f;
+}
+.statusWin {
+    background-color: #2ecc71;
+}
+.statusDraw {
+    background-color: #9b59b6;
+}
+
+
+.cell {
+    width: 90px;
+    height: 90px;
+    border: 6px solid #2c3e50;
+    font-size: 3.5em;
+    font-family: 'Gochi Hand', sans-serif;
+  }
+  .cell:hover {
+      background-color: #7f8c8d;
+  }
+  .cell::after {
+    content: '';
+    display: block;
+  }
+  .cell:first-of-type {
+    border-left-color: transparent;
+    border-top-color: transparent;
+  }
+  .cell:nth-of-type(2) {
+    border-top-color: transparent;
+  }
+  .cell:nth-of-type(3) {
+    border-right-color: transparent;
+    border-top-color: transparent;
+  }
+  tr:nth-of-type(3) .cell {
+    border-bottom-color: transparent;
+  }
