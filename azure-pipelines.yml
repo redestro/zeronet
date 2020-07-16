@@ -15,16 +15,12 @@ steps:
       command: 'get'
       arguments: '-d'
       workingDirectory: '$(System.DefaultWorkingDirectory)/server'
+      displayName: 'Install Go dependencies'
   - task: Go@0
     inputs:
       command: 'build'
       workingDirectory: '$(System.DefaultWorkingDirectory)/server'
-  - task: CopyFiles@2
-    inputs:
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
-  - task: PublishBuildArtifacts@1
-    inputs:
-       artifactName: drop
+      displayName: 'Build Go binary'
   - task: NodeTool@0
     inputs:
       versionSpec: '12.6.0'
@@ -36,10 +32,10 @@ steps:
     displayName: 'npm install and build'
   - task: CopyFiles@2
     inputs:
-      Contents: 'dist/**' # Pull the build directory (React)
-      TargetFolder: '$(Build.ArtifactStagingDirectory)/frontend'
+      Contents: 'dist/**' # Pull the build directory (Vue)
+      TargetFolder: '$(Build.ArtifactStagingDirectory)''
   - task: PublishBuildArtifacts@1
     inputs: 
       pathtoPublish: $(Build.ArtifactStagingDirectory) # dist or build files
-      ArtifactName: 'www' # output artifact named www
+      ArtifactName: 'build' # output artifact named build
    
