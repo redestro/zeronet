@@ -25,4 +25,21 @@ steps:
   - task: PublishBuildArtifacts@1
     inputs:
        artifactName: drop
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '12.6.0'
+      displayName: 'Install Node.js'
+  - script: |
+      cd frontend
+      npm install
+      npm run build
+    displayName: 'npm install and build'
+  - task: CopyFiles@2
+    inputs:
+      Contents: 'dist/**' # Pull the build directory (React)
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/frontend'
+  - task: PublishBuildArtifacts@1
+    inputs: 
+      pathtoPublish: $(Build.ArtifactStagingDirectory) # dist or build files
+      ArtifactName: 'www' # output artifact named www
    
