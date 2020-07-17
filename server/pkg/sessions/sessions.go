@@ -3,8 +3,8 @@ package sessions
 import (
 	"time"
 
-	"github.com/shubhamgupta2956/zeronet/server/pkg/players"
-	"github.com/shubhamgupta2956/zeronet/server/pkg/utils"
+	"github.com/redestro/zeronet/server/pkg/players"
+	"github.com/redestro/zeronet/server/pkg/utils"
 )
 
 // Session object

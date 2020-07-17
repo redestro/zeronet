@@ -6,7 +6,7 @@ FROM golang:1.14.3 as builder
 ENV GO111MODULE="on"
 
 # Copy the code from the host and compile it
-WORKDIR /go/src/github.com/shubhamgupta2956/zeronet/server
+WORKDIR /go/src/github.com/redestro/zeronet/server
 
 # install dependencies
 ADD ./go.sum ./go.sum
@@ -30,7 +30,7 @@ ENV TZ=Asia/Kolkata
 WORKDIR /root
 
 # add required files from host
-COPY --from=builder /go/src/github.com/shubhamgupta2956/zeronet/server/zero ./zero
+COPY --from=builder /go/src/github.com/redestro/zeronet/server/zero ./zero
 
 EXPOSE 8000
 

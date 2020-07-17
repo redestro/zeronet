@@ -1,7 +1,7 @@
 package players
 
 import (
-	"github.com/shubhamgupta2956/zeronet/server/pkg/games"
+	"github.com/redestro/zeronet/server/pkg/games"
 )
 
 // Player struct

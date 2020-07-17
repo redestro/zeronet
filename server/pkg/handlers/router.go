@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/shubhamgupta2956/zeronet/server/pkg/middlewares"
-	"github.com/shubhamgupta2956/zeronet/server/pkg/sessions"
+	"github.com/redestro/zeronet/server/pkg/middlewares"
+	"github.com/redestro/zeronet/server/pkg/sessions"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
