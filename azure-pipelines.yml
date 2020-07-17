@@ -5,42 +5,88 @@ trigger:
   
 pool:
    vmImage: 'ubuntu-latest'
-  
-steps: 
-  - task: GoTool@0
-    inputs:
-      version: '1.14.4'
-  - task: Go@0
-    inputs:
-      command: 'get'
-      arguments: '-d'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/server'
-      displayName: 'Install Go dependencies'
-  - task: Go@0
-    inputs:
-      command: 'build'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/server'
-      displayName: 'Build Go binary'
-  - task: NodeTool@0
-    inputs:
-      versionSpec: '12.6.0'
-      displayName: 'Install Node.js'
-  - script: |
-      cd frontend
-      npm install
-      npm run build
-      cd ..
-    displayName: 'npm install and build'
-  - task: CopyFiles@2
-    inputs:
-      Contents: 'server/server'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
-  - task: CopyFiles@2
-    inputs:
-      Contents: 'frontend/dist/**' # Pull the build directory (Vue)
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
-  - task: PublishBuildArtifacts@1
-    inputs: 
-      pathtoPublish: $(Build.ArtifactStagingDirectory) # dist or build files
-      ArtifactName: 'build' # output artifact named build
-   
+
+stages:
+- stage: Build
+  displayName: Build stage
+  jobs:  
+  - job: Build
+    displayName: Build
+    steps:
+    - task: GoTool@0
+      inputs:
+        version: '1.14.4'
+    - task: Go@0
+      inputs:
+        command: 'get'
+        arguments: '-d'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/server'
+        displayName: 'Install Go dependencies'
+    - task: Go@0
+      inputs:
+        command: 'build'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/server'
+        displayName: 'Build Go binary'
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '12.6.0'
+        displayName: 'Install Node.js'
+    - script: |
+        cd frontend
+        npm install
+        npm run build
+        cd ..
+      displayName: 'npm install and build'
+    - task: CopyFiles@2
+      inputs:
+        Contents: 'server/server'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    - task: CopyFiles@2
+      inputs:
+        Contents: 'frontend/dist/**' # Pull the build directory (Vue)
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    - task: PublishBuildArtifacts@1
+      inputs: 
+        pathtoPublish: $(Build.ArtifactStagingDirectory) # dist or build files
+        ArtifactName: 'build' # output artifact named build
+
+- stage: Deployment
+  displayName: Deployment stage
+  jobs: 
+    - deployment: VMDeploy
+      displayName: web
+      environment:
+        name: zeronet
+        resourceType: VirtualMachine
+      strategy:
+          rolling:
+            maxParallel: 2  #for percentages, mention as x%
+            preDeploy:
+              steps:
+              - download: current
+                artifact: build
+              - script: echo initialize, cleanup, backup, install certs
+            deploy:
+              steps:
+              - task: Bash@3
+                inputs:
+                  targetType: 'inline'
+                  script: |
+                    # Modify deployment script based on the app type
+                    echo "Starting deployment script run"
+                    cp -r '$(Pipeline.Workspace)/build' /home/zeronet/zeronet
+                    sudo chmod +x /home/zeronet/zeronet/server/server
+            routeTraffic:
+              steps:
+              - script: echo routing traffic
+            postRouteTraffic:
+              steps:
+              - script: echo health check post-route traffic
+            on:
+              failure:
+                steps:
+                - script: echo Restore from backup! This is on failure
+              success:
+                steps:
+                - script: echo Notify! This is on success
+
