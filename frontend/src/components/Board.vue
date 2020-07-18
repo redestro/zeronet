@@ -4,19 +4,19 @@
     <div class='gameStatus' :class='gameStatusColor'>{{ gameStatusMessage }}</div>
     <table class='grid'>
       <tr>
-        <cell name='1'></cell>
-        <cell name='2'></cell>
-        <cell name='3'></cell>
+        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name='0'></cell>
+        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name='1'></cell>
+        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name='2'></cell>
       </tr>
       <tr>
-        <cell name='4'></cell>
-        <cell name='5'></cell>
-        <cell name='6'></cell>
+        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name='3'></cell>
+        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name='4'></cell>
+        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name='5'></cell>
       </tr>
       <tr>
-        <cell name='7'></cell>
-        <cell name='8'></cell>
-        <cell name='9'></cell>
+        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name='6'></cell>
+        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name='7'></cell>
+        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name='8'></cell>
       </tr>
     </table>
   </div>
@@ -31,11 +31,12 @@ export default {
   components: { Cell },
   data() {
     return {
-      activePlayer: 'O',
+      activePlayer: 'X',
       gameStatus: 'turn',
-      gameStatusMessage: `O's turn`,
+      gameStatusMessage: "O's turn",
       moves: 0,
       cells: {
+        0: '',
         1: '',
         2: '',
         3: '',
@@ -43,19 +44,18 @@ export default {
         5: '',
         6: '',
         7: '',
-        8: '',
-        9: '',
+        8: ''
       },
       winConditions: [
-        [1, 2, 3],
-        [4, 5, 6],
-        [7, 8, 9],
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
         [1, 4, 7],
         [2, 5, 8],
-        [3, 6, 9],
-        [1, 5, 9],
-        [3, 5, 7],
-      ],
+        [0, 4, 8],
+        [2, 4, 6]
+      ]
     };
   },
   computed: {
@@ -64,7 +64,7 @@ export default {
         return 'X';
       }
       return 'O';
-    },
+    }
   },
   watch: {
     gameStatus() {
@@ -82,6 +82,12 @@ export default {
     }
   },
   methods: {
+    updateBoard(cellNumber) {
+      this.cells[cellNumber] = this.activePlayer;
+      this.moves++;
+      this.gameStatus = this.changeGameStatus();
+      this.changePlayer();
+    },
     changePlayer() {
       this.activePlayer = this.nonActivePlayer;
     },
@@ -96,9 +102,9 @@ export default {
       return false;
     },
     gameIsWon() {
-      Event.$emit('win', this.activePlayer);
+      this.$emit('win', this.activePlayer);
       this.gameStatusMessage = `${this.activePlayer} Wins !`;
-      Event.$emit('freeze');
+      this.$emit('freeze');
       return 'win';
     },
     changeGameStatus() {
@@ -112,19 +118,14 @@ export default {
     areEqual() {
       var len = arguments.length;
       for (var i = 1; i < len; i++) {
-        if (arguments[i] === '' || arguments[i] !== arguments[i - 1])
+        if (arguments[i] === '' || arguments[i] !== arguments[i - 1]) {
           return false;
+        }
       }
       return true;
     }
   },
   created() {
-    Event.$on('strike', cellNumber => {
-      this.cells[cellNumber] = this.activePlayer;
-      this.moves++;
-      this.gameStatus = this.changeGameStatus();
-      this.changePlayer();
-    });
     Event.$on('gridReset', () => {
       Object.assign(this.$data, this.$options.data());
     });
