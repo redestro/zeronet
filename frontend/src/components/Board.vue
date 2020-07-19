@@ -1,28 +1,31 @@
 /* eslint-disable */
 <template>
   <div>
-    <div class='gameStatus' :class='gameStatusColor'>{{ gameStatusMessage }}</div>
-    <table class='grid'>
+    <div class="gameStatus" :class="gameStatusColor">{{ gameStatusMessage }}</div>
+    <table class="grid">
       <tr>
-        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name='0'></cell>
-        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name='1'></cell>
-        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name='2'></cell>
+        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name="0"></cell>
+        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name="1"></cell>
+        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name="2"></cell>
       </tr>
       <tr>
-        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name='3'></cell>
-        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name='4'></cell>
-        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name='5'></cell>
+        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name="3"></cell>
+        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name="4"></cell>
+        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name="5"></cell>
       </tr>
       <tr>
-        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name='6'></cell>
-        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name='7'></cell>
-        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name='8'></cell>
+        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name="6"></cell>
+        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name="7"></cell>
+        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name="8"></cell>
       </tr>
     </table>
+    <button v-on:click="endSession">End Game Session</button>
   </div>
 </template>
 
 <script>
+import api from '@/api/playGameAPI';
+import endSessionApi from '@/api/endSessionAPI';
 import Cell from './Cell.vue';
 import '@/assets/_grid.scss';
 
@@ -32,6 +35,7 @@ export default {
   data() {
     return {
       activePlayer: 'X',
+      token: '',
       gameStatus: 'turn',
       gameStatusMessage: "O's turn",
       moves: 0,
@@ -78,15 +82,30 @@ export default {
 
         return;
       }
+      console.log(this.activePlayer)
       this.gameStatusMessage = `${this.activePlayer}'s turn`;
     }
   },
   methods: {
+    endSession() {
+      console.log("hi")
+      endSessionApi.endSession();
+    },
     updateBoard(cellNumber) {
       this.cells[cellNumber] = this.activePlayer;
       this.moves++;
       this.gameStatus = this.changeGameStatus();
       this.changePlayer();
+      this.getMove(cellNumber)
+    },
+    getMove(currentMove) {
+      api.playGameAIvsHuman(currentMove, this.$store.getters.token).then(
+        (event => {
+          console.log(event)
+          this.updateBoard(event.move)
+          console.log(this.cells)
+        }).bind(this)
+      )
     },
     changePlayer() {
       this.activePlayer = this.nonActivePlayer;
@@ -123,7 +142,7 @@ export default {
         }
       }
       return true;
-    }
+    },
   },
   created() {
     Event.$on('gridReset', () => {
