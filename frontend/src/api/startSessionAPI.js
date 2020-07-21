@@ -11,6 +11,5 @@ export default {
       .catch(error => {
         return Promise.reject(error);
       });
-    // return response.data.token;
   }
 };

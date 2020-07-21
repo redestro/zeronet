@@ -7,7 +7,6 @@ export default {
       .join("&");
 
     return axiosInstance.post(`play/${token}/human`, formBody).then(response => {
-      console.log(response);
       return response;
     });
   }

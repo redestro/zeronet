@@ -4,19 +4,19 @@
     <div class="gameStatus" :class="gameStatusColor">{{ gameStatusMessage }}</div>
     <table class="grid">
       <tr>
-        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name="0"></cell>
-        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name="1"></cell>
-        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name="2"></cell>
+        <cell :activePlayer="this.activePlayer" :mark="this.cells[0]" @strike="updateBoard" name="0"></cell>
+        <cell :activePlayer="this.activePlayer" :mark="this.cells[1]" @strike="updateBoard" name="1"></cell>
+        <cell :activePlayer="this.activePlayer" :mark="this.cells[2]" @strike="updateBoard" name="2"></cell>
       </tr>
       <tr>
-        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name="3"></cell>
-        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name="4"></cell>
-        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name="5"></cell>
+        <cell :activePlayer="this.activePlayer" :mark="this.cells[3]" @strike="updateBoard" name="3"></cell>
+        <cell :activePlayer="this.activePlayer" :mark="this.cells[4]" @strike="updateBoard" name="4"></cell>
+        <cell :activePlayer="this.activePlayer" :mark="this.cells[5]" @strike="updateBoard" name="5"></cell>
       </tr>
       <tr>
-        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name="6"></cell>
-        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name="7"></cell>
-        <cell :activePlayer="this.activePlayer" @strike="updateBoard" name="8"></cell>
+        <cell :activePlayer="this.activePlayer" :mark="this.cells[6]" @strike="updateBoard" name="6"></cell>
+        <cell :activePlayer="this.activePlayer" :mark="this.cells[7]" @strike="updateBoard" name="7"></cell>
+        <cell :activePlayer="this.activePlayer" :mark="this.cells[8]" @strike="updateBoard" name="8"></cell>
       </tr>
     </table>
     <button v-on:click="endSession">End Game Session</button>
@@ -82,12 +82,12 @@ export default {
 
         return;
       }
-      console.log(this.activePlayer)
       this.gameStatusMessage = `${this.activePlayer}'s turn`;
     }
   },
   methods: {
     endSession() {
+      this.$store.commit("updateToken", "");
       endSessionApi.endSession();
     },
     updateBoard(cellNumber) {
@@ -105,7 +105,7 @@ export default {
       }
       api.playGameAIvsHuman(payload, this.$store.getters.token).then(
         (event => {
-          this.cells[event.move] = this.activePlayer;
+          this.cells[event.data.move] = this.activePlayer;
           this.moves++;
           this.gameStatus = this.changeGameStatus();
           this.changePlayer();
