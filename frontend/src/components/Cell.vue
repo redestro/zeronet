@@ -17,7 +17,7 @@ export default {
     strike() {
       if (!this.frozen) {
         this.mark = this.activePlayer;
-        this.frozen = true;
+        // this.frozen = true;
         this.$emit('strike', this.name);
       }
     }
