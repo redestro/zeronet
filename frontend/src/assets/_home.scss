@@ -10,11 +10,13 @@
         color: rgb(204, 214, 246);
         font-size: 50px;
         margin: 0;
+        margin-bottom: 30px;
     }
 }
 
 .grid {
     color: rgb(100, 255, 218);
+    margin-bottom: 50px;
 }
 
 .glitch{
@@ -64,4 +66,15 @@
     overflow:hidden;
     clip:rect(0,900px,0,0); 
     animation:noise-anim-2 3s infinite linear alternate-reverse;
+  }
+
+  button {
+    border: none;
+    background-color: #f1c40f;
+    font-size: 20px;
+    padding: 6px 20px;
+    border-radius: 5px;
+    margin: 20px;
+    color: white;
+    font-weight: 700;
   }

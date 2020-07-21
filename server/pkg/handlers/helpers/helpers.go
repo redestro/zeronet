@@ -3,6 +3,7 @@ package helpers
 import (
 	"net/http"
 	"strconv"
+	"fmt"
 
 	"github.com/go-chi/chi"
 )
@@ -27,6 +28,7 @@ func ConvertStringToInt(param string) int {
 	value64, err := strconv.ParseInt(param, 10, 64)
 	value := int(value64)
 	if err != nil {
+		fmt.Println(param)
 		panic(err)
 	}
 	return value

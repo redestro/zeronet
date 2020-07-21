@@ -99,11 +99,19 @@ export default {
       this.getMove(cellNumber)
     },
     getMove(currentMove) {
-      api.playGameAIvsHuman(currentMove, this.$store.getters.token).then(
+      const payload = {
+        player: '1',
+        move: currentMove,
+        symbol: 'O'
+      }
+      api.playGameAIvsHuman(payload, this.$store.getters.token).then(
         (event => {
           console.log(event)
-          this.updateBoard(event.move)
           console.log(this.cells)
+          this.cells[event.move] = this.activePlayer;
+          this.moves++;
+          this.gameStatus = this.changeGameStatus();
+          this.changePlayer();
         }).bind(this)
       )
     },
