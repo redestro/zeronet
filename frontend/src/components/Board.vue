@@ -88,7 +88,6 @@ export default {
   },
   methods: {
     endSession() {
-      console.log("hi")
       endSessionApi.endSession();
     },
     updateBoard(cellNumber) {
@@ -106,8 +105,6 @@ export default {
       }
       api.playGameAIvsHuman(payload, this.$store.getters.token).then(
         (event => {
-          console.log(event)
-          console.log(this.cells)
           this.cells[event.move] = this.activePlayer;
           this.moves++;
           this.gameStatus = this.changeGameStatus();
