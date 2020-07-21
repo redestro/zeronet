@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/shubhamgupta2956/zeronet/server/pkg/handlers/helpers"
+	"github.com/redestro/zeronet/server/pkg/handlers/helpers"
 
-	"github.com/shubhamgupta2956/zeronet/server/pkg/sessions"
+	"github.com/redestro/zeronet/server/pkg/sessions"
 )
 
 type response struct {

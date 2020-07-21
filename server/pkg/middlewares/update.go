@@ -4,8 +4,8 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/shubhamgupta2956/zeronet/server/pkg/handlers/helpers"
-	"github.com/shubhamgupta2956/zeronet/server/pkg/sessions"
+	"github.com/redestro/zeronet/server/pkg/handlers/helpers"
+	"github.com/redestro/zeronet/server/pkg/sessions"
 )
 
 // Update the current state of the board
