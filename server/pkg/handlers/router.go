@@ -34,10 +34,10 @@ func InitRoutes(db *sessions.Database) *chi.Mux {
 	})
 
 	r.Route("/start", func(r chi.Router) {
-		r.Get("/human/{level1}/{level2}", StartHuman)
-		r.Get("/ai/{level1}/{level2}", StartAI)
-		r.Get("/revhuman/{level1}/{level2}", StartRevHuman)
-		r.Get("/human2/{level1}/{level2}", StartHuman2)
+		r.Get("/human", StartHuman)
+		r.Get("/ai", StartAI)
+		r.Get("/revhuman", StartRevHuman)
+		r.Get("/human2", StartHuman2)
 	})
 	r.Route("/play/{token}", func(r chi.Router) {
 		r.Use(middlewares.Update)

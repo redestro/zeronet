@@ -8,7 +8,6 @@ import (
 type Player struct {
 	token  string `json:"token"`
 	kind   string `json: "kind"`
-	level  int    `json:"level"`
 	symbol string `json:"symbol"`
 }
 
@@ -33,14 +32,10 @@ func (player *Player) Play(board [9]string) (int, string) {
 }
 
 // Init creates a new player
-func Init(token string, kind string, level int, symbol string) *Player {
-	if kind == "AI" && level == 0 {
-		panic("Wrong level for AI")
-	}
+func Init(token string, kind string, symbol string) *Player {
 	return &Player{
 		token,
 		kind,
-		level,
 		symbol,
 	}
 }

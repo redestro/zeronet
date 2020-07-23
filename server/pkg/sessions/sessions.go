@@ -18,69 +18,42 @@ type Session struct {
 }
 
 // Create makes a new Session entry in the db
-func Create(db *Database, mode string, level1 int, level2 int) *Session {
+func Create(db *Database, mode string) *Session {
 	token := utils.Token(time.Now().Format(time.RFC850))
 	player1Symbol := "O"
 	player2Symbol := "X"
 	emptyMoves := [9]int{0}
 	emptyBoard := [9]string{"_", "_", "_", "_", "_", "_", "_", "_", "_"}
+	var player1 *players.Player
+	var player2 *players.Player
+	var session *Session
 	switch mode {
 	case "human":
-		session := &Session{
-			token,
-			emptyMoves,
-			emptyBoard,
-			0,
-			players.Init(token, "Human", level1, player1Symbol),
-			players.Init(token, "AI", level2, player2Symbol),
-		}
-		db.AddSession(token, session)
-		return session
+		player1 = players.Init(token, "Human", player1Symbol)
+		player2 = players.Init(token, "AI", player2Symbol)
 	case "ai":
-		session := &Session{
-			token,
-			emptyMoves,
-			emptyBoard,
-			0,
-			players.Init(token, "AI", level1, player1Symbol),
-			players.Init(token, "AI", level2, player2Symbol),
-		}
-		db.AddSession(token, session)
-		return session
+		player1 = players.Init(token, "AI", player1Symbol)
+		player2 = players.Init(token, "AI", player2Symbol)
 	case "humanRev":
-		session := &Session{
-			token,
-			emptyMoves,
-			emptyBoard,
-			0,
-			players.Init(token, "AI", level1, player1Symbol),
-			players.Init(token, "Human", level2, player2Symbol),
-		}
-		db.AddSession(token, session)
-		return session
+		player1 = players.Init(token, "AI", player1Symbol)
+		player2 = players.Init(token, "Human", player2Symbol)
 	case "human2":
-		session := &Session{
-			token,
-			emptyMoves,
-			emptyBoard,
-			0,
-			players.Init(token, "Human", level1, player1Symbol),
-			players.Init(token, "Human", level2, player2Symbol),
-		}
-		db.AddSession(token, session)
-		return session
+		player1 = players.Init(token, "Human", player1Symbol)
+		player2 = players.Init(token, "Human", player2Symbol)
 	default:
-		session := &Session{
-			token,
-			emptyMoves,
-			emptyBoard,
-			0,
-			players.Init(token, "Human", level1, player1Symbol),
-			players.Init(token, "AI", level2, player2Symbol),
-		}
-		db.AddSession(token, session)
-		return session
+		player1 = players.Init(token, "Human", player1Symbol)
+		player2 = players.Init(token, "AI", player2Symbol)
 	}
+	session = &Session{
+		token,
+		emptyMoves,
+		emptyBoard,
+		0,
+		player1,
+		player2,
+	}
+	db.AddSession(token, session)
+	return session
 }
 
 // Update updates session status
