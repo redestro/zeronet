@@ -7,10 +7,10 @@
 import "@/assets/_grid.scss";
 
 export default {
-  props: {activePlayer: String, name: String, mark: String},
+  props: { activePlayer: String, name: String, mark: String },
   data() {
     return {
-      frozen: false,
+      frozen: false
     };
   },
   methods: {

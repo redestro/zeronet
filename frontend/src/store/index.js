@@ -17,7 +17,7 @@ export default new Vuex.Store({
       6: '',
       7: '',
       8: ''
-    },
+    }
   },
   mutations: {
     updateToken(state, token) {
@@ -33,8 +33,8 @@ export default new Vuex.Store({
   getters: {
     token: state => state.token,
     gameMode: state => state.gameMode,
-    cells: state => state.cells,
+    cells: state => state.cells
   },
   modules: {
-  },
+  }
 });

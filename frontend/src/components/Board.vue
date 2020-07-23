@@ -81,12 +81,12 @@ export default {
       this.$store.commit("updateToken", "");
     },
     updateBoard(cellNumber) {
-      this.$store.commit("updateCells", { cellNumbers: cellNumber, activePlayer: this.activePlayer});
+      this.$store.commit("updateCells", { cellNumbers: cellNumber, activePlayer: this.activePlayer });
       this.moves++;
       this.gameStatus = this.changeGameStatus();
       this.changePlayer();
       if (this.$store.getters.gameMode !== 'human2') {
-        this.getMove(cellNumber)
+        this.getMove(cellNumber);
       }
     },
     getMove(currentMove) {
@@ -94,16 +94,16 @@ export default {
         player: '1',
         move: currentMove,
         symbol: 'O'
-      }
+      };
       api.playGameAIvsHuman(payload, this.$store.getters.token).then(
         (event => {
-          this.$store.commit("updateCells", {cellNumbers: event.data.move, activePlayer: this.activePlayer});
+          this.$store.commit("updateCells", { cellNumbers: event.data.move, activePlayer: this.activePlayer });
           this.moves++;
           this.recommendations = event.data.recoMove;
           this.gameStatus = this.changeGameStatus();
           this.changePlayer();
         }).bind(this)
-      )
+      );
     },
     changePlayer() {
       this.activePlayer = this.nonActivePlayer;
@@ -133,14 +133,14 @@ export default {
       return 'turn';
     },
     areEqual() {
-      var len = arguments.length;
-      for (var i = 1; i < len; i++) {
+      const len = arguments.length;
+      for (let i = 1; i < len; i++) {
         if (arguments[i] === '' || arguments[i] !== arguments[i - 1]) {
           return false;
         }
       }
       return true;
-    },
-  },
+    }
+  }
 };
 </script>
