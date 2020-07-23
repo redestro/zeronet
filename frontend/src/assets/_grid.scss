@@ -35,6 +35,7 @@
   }
   .cell:hover {
       background-color: #7f8c8d;
+      cursor: pointer;
   }
   .cell::after {
     content: '';

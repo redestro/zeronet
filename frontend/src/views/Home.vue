@@ -1,8 +1,10 @@
 <template>
   <div class="home">
+    <img src="@/assets/left.png" class="left" />
     <p class="text">Welcome to <span class="glitch" data-text="Zeronet">Zeronet</span></p>
     <OptionsScreen v-show="!$store.getters.token" />
     <Board v-show="$store.getters.token" />
+    <img src="@/assets/right.png" class="right" />
   </div>
 </template>
 

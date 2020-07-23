@@ -78,3 +78,21 @@
     color: white;
     font-weight: 700;
   }
+
+  button:hover {
+    cursor: pointer;
+  }
+
+.left {
+  position: absolute;
+  left: 0;
+  width: 24rem;
+  top: 0;
+}
+
+.right {
+  position: absolute;
+  right: 0;
+  width: 24rem;
+  bottom: 0;
+}

@@ -132,10 +132,10 @@ export default {
       }
       return 'turn';
     },
-    areEqual() {
-      const len = arguments.length;
+    areEqual(...args) {
+      const len = args.length;
       for (let i = 1; i < len; i++) {
-        if (arguments[i] === '' || arguments[i] !== arguments[i - 1]) {
+        if (args[i] === '' || args[i] !== args[i - 1]) {
           return false;
         }
       }
