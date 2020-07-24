@@ -20,9 +20,9 @@ export default new Vuex.Store({
     updateCells(state, payload) {
       state.cells[payload.cellNumbers] = payload.activePlayer;
     },
-    startSession(state, token, gameMode) {
-        state.token = token;
-        state.gameMode = gameMode;
+    startSession(state, payload) {
+        state.token = payload.token;
+        state.gameMode = payload.gameMode;
     },
     freezeSession(state) {
       state.freeze = true;
