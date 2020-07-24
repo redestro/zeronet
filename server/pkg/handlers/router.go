@@ -16,7 +16,7 @@ import (
 func InitRoutes(db *sessions.Database) *chi.Mux {
 	r := chi.NewRouter()
 	cors := cors.New(cors.Options{
-		AllowedMethods:   []string{"GET", "POST", "PUT", "OPTIONS"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
 		AllowedHeaders:   []string{"Origin", "Authorization", "Access-Control-Allow-Origin", "Content-Type", "x-access-token"},
 		ExposedHeaders:   []string{"Content-Length", "Access-Control-Allow-Origin"},
 		AllowCredentials: true,
