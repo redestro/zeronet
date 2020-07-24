@@ -19,7 +19,8 @@
         <cell :activePlayer="this.activePlayer" :mark="this.$store.getters.cells[8]" @strike="updateBoard" name="8" />
       </tr>
     </table>
-    <div>Recommendation for current player: {{this.recommendations}} </div>
+    <div class="recommendations">Recommendation for current player </div>
+    <div class="recommendations">Row: {{ this.row }} Col: {{ this.col }} </div>
     <button v-on:click="endSession">End Game Session</button>
   </div>
 </template>
@@ -35,7 +36,7 @@ export default {
   components: { Cell },
   data() {
     return {
-      activePlayer: 'O',
+      activePlayer: 'X',
       token: '',
       gameStatus: 'turn',
       gameStatusColor: '',
@@ -51,7 +52,9 @@ export default {
         [0, 4, 8],
         [2, 4, 6]
       ],
-      recommendations: ''
+      recommendations: '',
+      row: '',
+      col: ''
     };
   },
   computed: {
@@ -100,7 +103,9 @@ export default {
         (event => {
           this.$store.commit("updateCells", { cellNumbers: event.data.move, activePlayer: this.activePlayer });
           this.moves++;
-          this.recommendations = event.data.recoMove;
+          this.recommendations = event.data.recoMove + 1;
+          this.row = Math.floor(Number.isInteger(this.recommendations / 3) ? (this.recommendations / 3) : (this.recommendations / 3) + 1);
+          this.col = this.recommendations % 3 === 0 ? 3 : this.recommendations % 3;
           this.gameStatus = this.changeGameStatus();
           this.changePlayer();
         }).bind(this)

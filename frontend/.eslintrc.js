@@ -51,6 +51,6 @@ module.exports = {
     "no-alert": 0,
     "no-lone-blocks": 0,
     "no-plusplus": 0,
-    "max-len": ["error", { code: 120 }]
+    "max-len": ["error", { code: 150 }]
   }
 };
