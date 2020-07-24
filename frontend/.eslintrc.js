@@ -46,6 +46,7 @@ module.exports = {
     "eol-last": 0,
     "no-unused-vars": 0,
     "operator-linebreak": 0,
+    "import/prefer-default-export": 0,
     "prefer-destructuring": 0,
     "no-else-return": 0,
     "vars-on-top": 0,

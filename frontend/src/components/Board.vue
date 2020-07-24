@@ -73,6 +73,7 @@
 <script>
 import api from "@/api/playGameAPI";
 import endSessionApi from "@/api/endSessionAPI";
+import { MOVES_ARR } from "../utils/utils";
 import Cell from "./Cell.vue";
 import "@/assets/_grid.scss";
 
@@ -251,7 +252,7 @@ export default {
   },
   created() {
     Event.$on("aiMove", ({ type, token }) => {
-      if (type === "ai" || type === "revhuman") {
+      if (type === "revhuman") {
         const payload = {
           player: 0,
           move: 0,
@@ -270,8 +271,13 @@ export default {
         this.updateBoard(0, "NA");
         this.activePlayer = "X";
       }
-      if (type === 'ai') {
-        const movesArr = [];
+      if (type === "ai") {
+        for (let i = 0; i < MOVES_ARR.length; i++) {
+          setTimeout(() => {
+            this.updateBoard(MOVES_ARR[i], "NA");
+            console.log(MOVES_ARR[i]);
+          }, i * 1000);
+        }
       }
     });
   },
