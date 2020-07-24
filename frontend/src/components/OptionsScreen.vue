@@ -17,7 +17,7 @@ export default {
     startSession(type) {
       api.startNewSession(type).then(
         (token => {
-          this.$store.commit("startSession", token, type);
+          this.$store.commit("startSession", { token, gameMode: type });
         }).bind(this)
       );
     }
