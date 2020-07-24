@@ -97,8 +97,8 @@ export default {
         [2, 4, 6],
       ],
       recommendations: "",
-      row: "1",
-      col: "1",
+      row: "2",
+      col: "2",
     };
   },
   // computed: {
@@ -126,6 +126,7 @@ export default {
     endSession() {
       this.$store.commit("endSession");
       this.updateBoard();
+      this.activePlayer = 'O';
       this.moves = 0;
       this.gameStatusColor = "";
       this.row = 2;
@@ -140,7 +141,10 @@ export default {
       this.moves++;
       this.gameStatus = this.changeGameStatus();
       this.changePlayer();
-      this.getMove(cellNumber, this.$store.getters.gameMode || gameMode);
+      console.log(gameMode, this.$store.getters.gameMode);
+      if (gameMode !== "iss render nahi karna") {
+        this.getMove(cellNumber, this.$store.getters.gameMode || gameMode);
+      }
     },
     changeGameStatus() {
       if (this.checkForWin()) {
@@ -172,6 +176,11 @@ export default {
         move: currentMove,
         symbol: "O",
       };
+      const revPayload = {
+        player: "2",
+        move: currentMove,
+        symbol: "X",
+      };
       switch (gameMode) {
         case "human":
           api.playGameAIvsHuman(payload, this.$store.getters.token).then(
@@ -195,12 +204,14 @@ export default {
           );
           break;
         case "revhuman":
-          api.playGameAIvsHuman(payload, this.$store.getters.token).then(
+          api.playGameAIvsHuman(revPayload, this.$store.getters.token).then(
             ((event) => {
+              console.log(event.data.recoMove);
               this.$store.commit("updateCells", {
                 cellNumbers: event.data.move,
                 activePlayer: this.activePlayer,
               });
+              console.log(event.data.board);
               this.moves++;
               this.recommendations = event.data.recoMove + 1;
               this.row = Math.floor(
@@ -267,11 +278,18 @@ export default {
     },
   },
   created() {
-    Event.$on("hello", (type) => {
+    Event.$on("aiMove", ({type, token}) => {
       console.log(type);
       if (type === "ai" || type === "revhuman") {
-        this.changePlayer();
-        this.updateBoard(0, type);
+        const payload = {
+          player: 0,
+          move: 0,
+          symbol: "O"
+        };
+        api.firstAiMove(payload, token);
+        this.updateBoard(0, "iss render nahi karna");
+        this.activePlayer = 'X';
+        // this.changePlayer();
       }
     });
   },

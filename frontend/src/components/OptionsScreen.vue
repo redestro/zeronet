@@ -10,18 +10,18 @@
 
 <script>
 import "@/assets/_grid.scss";
-import api from '@/api/startSessionAPI';
+import api from "@/api/startSessionAPI";
 
 export default {
   methods: {
     startSession(type) {
       api.startNewSession(type).then(
-        (token => {
+        ((token) => {
           this.$store.commit("startSession", { token, gameMode: type });
+          Event.$emit("aiMove", { type, token });
         }).bind(this)
       );
-      Event.$emit('hello', type);
-    }
-  }
+    },
+  },
 };
 </script>
