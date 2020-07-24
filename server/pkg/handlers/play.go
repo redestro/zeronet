@@ -39,7 +39,9 @@ func PlayHuman(w http.ResponseWriter, r *http.Request) {
 		panic("Invalid player")
 	}
 	replyMove, replySymbol := player.Play(session.Board)
-	session.Update(replyMove, replySymbol)
+	if session.Player1.Kind != "Human" || session.Player2.Kind != "Human" {
+		session.Update(replyMove, replySymbol)
+	}
 	recoMove, recoSymbol := alterPlayer.Play(session.Board)
 
 	reponse := PlayResponse{
