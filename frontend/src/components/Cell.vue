@@ -8,24 +8,13 @@ import "@/assets/_grid.scss";
 
 export default {
   props: { activePlayer: String, name: String, mark: String },
-  data() {
-    return {
-      frozen: false
-    };
-  },
   methods: {
     strike() {
-      if (!this.frozen && !this.$store.getters.freeze) {
+      if (!this.$store.getters.freeze && !this.$store.getters.cells[this.name]) {
         this.mark = this.activePlayer;
         this.$emit('strike', this.name);
       }
     }
-  },
-  created() {
-    this.$on("clearCell", () => {
-      this.mark = "";
-      this.frozen = false;
-    });
   }
 };
 </script>
