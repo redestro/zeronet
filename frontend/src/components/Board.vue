@@ -97,8 +97,8 @@ export default {
         [2, 4, 6],
       ],
       recommendations: "",
-      row: "2",
-      col: "2",
+      row: "1",
+      col: "1",
     };
   },
   // computed: {
@@ -126,11 +126,11 @@ export default {
     endSession() {
       this.$store.commit("endSession");
       this.updateBoard();
-      this.activePlayer = 'O';
+      this.activePlayer = "O";
       this.moves = 0;
       this.gameStatusColor = "";
-      this.row = 2;
-      this.col = 2;
+      this.row = 1;
+      this.col = 1;
       this.gameStatusMessage = "O's turn";
     },
     updateBoard(cellNumber, gameMode) {
@@ -278,17 +278,26 @@ export default {
     },
   },
   created() {
-    Event.$on("aiMove", ({type, token}) => {
+    Event.$on("aiMove", ({ type, token }) => {
       console.log(type);
       if (type === "ai" || type === "revhuman") {
         const payload = {
           player: 0,
           move: 0,
-          symbol: "O"
+          symbol: "O",
         };
-        api.firstAiMove(payload, token);
+        api.firstAiMove(payload, token).then((event) => {
+          this.recommendations = event.data.recoMove + 1;
+          this.row = Math.floor(
+            Number.isInteger(this.recommendations / 3)
+              ? this.recommendations / 3
+              : this.recommendations / 3 + 1
+          );
+          this.col =
+            this.recommendations % 3 === 0 ? 3 : this.recommendations % 3;
+        });
         this.updateBoard(0, "iss render nahi karna");
-        this.activePlayer = 'X';
+        this.activePlayer = "X";
         // this.changePlayer();
       }
     });
