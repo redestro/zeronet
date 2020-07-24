@@ -7,7 +7,7 @@ import (
 // Player struct
 type Player struct {
 	token  string `json:"token"`
-	kind   string `json: "kind"`
+	Kind   string `json: "kind"`
 	symbol string `json:"symbol"`
 }
 
