@@ -275,7 +275,6 @@ export default {
         for (let i = 0; i < MOVES_ARR.length; i++) {
           setTimeout(() => {
             this.updateBoard(MOVES_ARR[i], "NA");
-            console.log(MOVES_ARR[i]);
           }, i * 1000);
         }
       }
