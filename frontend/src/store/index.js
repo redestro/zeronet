@@ -1,14 +1,14 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+import Vue from "vue";
+import Vuex from "vuex";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     freeze: false,
-    token: '',
-    gameMode: '',
-    cells: Array(9).fill('')
+    token: "",
+    gameMode: "",
+    cells: Array(9).fill("")
   },
   mutations: {
     updateToken(state, token) {
@@ -21,17 +21,17 @@ export default new Vuex.Store({
       state.cells[payload.cellNumbers] = payload.activePlayer;
     },
     startSession(state, payload) {
-        state.token = payload.token;
-        state.gameMode = payload.gameMode;
+      state.token = payload.token;
+      state.gameMode = payload.gameMode;
     },
     freezeSession(state) {
       state.freeze = true;
     },
     endSession(state) {
+      state.cells.fill("");
       state.freeze = false;
-      state.token = '';
-      state.gameMode = '';
-      state.cells.fill('');
+      state.token = "";
+      state.gameMode = "";
     }
   },
   getters: {
@@ -40,6 +40,5 @@ export default new Vuex.Store({
     cells: state => state.cells,
     freeze: state => state.freeze
   },
-  modules: {
-  }
+  modules: {}
 });

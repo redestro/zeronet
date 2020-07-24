@@ -5,7 +5,8 @@ const axiosInstance = axios.create({
     Accept: "*/*",
     "Content-Type": "application/x-www-form-urlencoded"
   },
-  baseURL: "http://ec2-18-218-74-74.us-east-2.compute.amazonaws.com:8000/"
+  // baseURL: "http://ec2-18-218-74-74.us-east-2.compute.amazonaws.com:8000/"
+  baseURL: "http://localhost:8000/"
 });
 
 export default axiosInstance;

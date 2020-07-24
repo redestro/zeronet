@@ -20,6 +20,7 @@ export default {
           this.$store.commit("startSession", { token, gameMode: type });
         }).bind(this)
       );
+      Event.$emit('hello', type);
     }
   }
 };
