@@ -36,7 +36,6 @@ export default {
   data() {
     return {
       activePlayer: 'O',
-      token: '',
       gameStatus: 'turn',
       gameStatusColor: '',
       gameStatusMessage: "O's turn",
@@ -63,15 +62,14 @@ export default {
     }
   },
   watch: {
-    gameStatus() {
-      if (this.gameStatus === 'win') {
+    gameStatus: function (newValue) {
+      if (newValue === 'win') {
         this.gameStatusColor = 'statusWin';
+        this.gameStatusMessage = `${this.activePlayer} Wins !`;
         return;
-      }
-      if (this.gameStatus === 'draw') {
+      } else if (newValue === 'draw') {
         this.gameStatusColor = 'statusDraw';
         this.gameStatusMessage = 'Draw !';
-
         return;
       }
       this.gameStatusMessage = `${this.activePlayer}'s turn`;
@@ -79,7 +77,7 @@ export default {
   },
   methods: {
     endSession() {
-      this.$store.commit("updateToken", "");
+      this.$store.commit("endSession");
     },
     updateBoard(cellNumber) {
       this.$store.commit("updateCells", { cellNumbers: cellNumber, activePlayer: this.activePlayer });
@@ -89,6 +87,29 @@ export default {
       if (this.$store.getters.gameMode !== 'human2') {
         this.getMove(cellNumber);
       }
+    },
+    changeGameStatus() {
+      if (this.checkForWin()) {
+        return this.gameIsWon();
+      } else if (this.moves === 9) {
+        return 'draw';
+      }
+      return 'turn';
+    },
+    checkForWin() {
+      for (let i = 0; i < this.winConditions.length; i++) {
+        const wc = this.winConditions[i];
+        const cells = this.$store.getters.cells;
+        if (this.areEqual(cells[wc[0]], cells[wc[1]], cells[wc[2]])) {
+          return true;
+        }
+      }
+      return false;
+    },
+    gameIsWon() {
+      this.$emit('win', this.activePlayer);
+      this.$store.commit('freezeSession');
+      return 'win';
     },
     getMove(currentMove) {
       const payload = {
@@ -108,31 +129,6 @@ export default {
     },
     changePlayer() {
       this.activePlayer = this.nonActivePlayer;
-    },
-    checkForWin() {
-      for (let i = 0; i < this.winConditions.length; i++) {
-        const wc = this.winConditions[i];
-        const cells = this.$store.getters.cells;
-        if (this.areEqual(cells[wc[0]], cells[wc[1]], cells[wc[2]])) {
-          return true;
-        }
-      }
-      return false;
-    },
-    gameIsWon() {
-      this.$emit('win', this.activePlayer);
-      this.gameStatusMessage = `${this.activePlayer} Wins !`;
-      this.$emit('freeze');
-      this.$store.commit('freezeSession');
-      return 'win';
-    },
-    changeGameStatus() {
-      if (this.checkForWin()) {
-        return this.gameIsWon();
-      } else if (this.moves === 9) {
-        return 'draw';
-      }
-      return 'turn';
     },
     areEqual(...args) {
       const len = args.length;
