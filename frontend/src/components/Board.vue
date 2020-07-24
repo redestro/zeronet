@@ -101,16 +101,8 @@ export default {
       col: "1",
     };
   },
-  // computed: {
-  //   nonActivePlayer() {
-  //     if (this.activePlayer === 'O') {
-  //       return 'X';
-  //     }
-  //     return 'O';
-  //   }
-  // },
   watch: {
-    gameStatus: function (newValue) {
+    gameStatus(newValue) {
       if (newValue === "win") {
         this.gameStatusColor = "statusWin";
         return;
@@ -141,8 +133,7 @@ export default {
       this.moves++;
       this.gameStatus = this.changeGameStatus();
       this.changePlayer();
-      console.log(gameMode, this.$store.getters.gameMode);
-      if (gameMode !== "iss render nahi karna") {
+      if (gameMode !== "NA") {
         this.getMove(cellNumber, this.$store.getters.gameMode || gameMode);
       }
     },
@@ -166,7 +157,6 @@ export default {
     },
     gameIsWon() {
       this.gameStatusMessage = `${this.activePlayer} Wins !`;
-      // this.$emit('win', this.activePlayer);
       this.$store.commit("freezeSession");
       return "win";
     },
@@ -206,12 +196,10 @@ export default {
         case "revhuman":
           api.playGameAIvsHuman(revPayload, this.$store.getters.token).then(
             ((event) => {
-              console.log(event.data.recoMove);
               this.$store.commit("updateCells", {
                 cellNumbers: event.data.move,
                 activePlayer: this.activePlayer,
               });
-              console.log(event.data.board);
               this.moves++;
               this.recommendations = event.data.recoMove + 1;
               this.row = Math.floor(
@@ -240,27 +228,11 @@ export default {
                 this.recommendations % 3 === 0 ? 3 : this.recommendations % 3;
             });
           break;
-        case "ai":
-          api
-            .playGameAIvsHuman(payload, this.$store.getters.token)
-            .then((event) => {
-              this.recommendations = event.data.recoMove + 1;
-              this.row = Math.floor(
-                Number.isInteger(this.recommendations / 3)
-                  ? this.recommendations / 3
-                  : this.recommendations / 3 + 1
-              );
-              this.col =
-                this.recommendations % 3 === 0 ? 3 : this.recommendations % 3;
-              this.updateBoard(event.data.recoMove);
-            });
-          break;
         default:
           break;
       }
     },
     changePlayer() {
-      // this.activePlayer = this.nonActivePlayer;
       if (this.activePlayer === "O") {
         this.activePlayer = "X";
       } else {
@@ -279,7 +251,6 @@ export default {
   },
   created() {
     Event.$on("aiMove", ({ type, token }) => {
-      console.log(type);
       if (type === "ai" || type === "revhuman") {
         const payload = {
           player: 0,
@@ -296,9 +267,11 @@ export default {
           this.col =
             this.recommendations % 3 === 0 ? 3 : this.recommendations % 3;
         });
-        this.updateBoard(0, "iss render nahi karna");
+        this.updateBoard(0, "NA");
         this.activePlayer = "X";
-        // this.changePlayer();
+      }
+      if (type === 'ai') {
+        const movesArr = [];
       }
     });
   },

@@ -9,7 +9,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import '@/assets/_home.scss';
 import Board from '@/components/Board.vue';
 import OptionsScreen from '@/components/OptionsScreen.vue';
