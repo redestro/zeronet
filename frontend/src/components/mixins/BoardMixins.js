@@ -40,6 +40,7 @@ export const BoardMixins = {
   },
   methods: {
     endSession() {
+      endSessionApi.endSession(this.$store.getters.token);
       this.$store.commit("endSession");
       this.updateBoard();
       this.activePlayer = "O";
