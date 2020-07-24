@@ -15,7 +15,7 @@ export default {
   },
   methods: {
     strike() {
-      if (!this.frozen) {
+      if (!this.frozen && !this.$store.getters.freeze) {
         this.mark = this.activePlayer;
         this.$emit('strike', this.name);
       }
@@ -26,7 +26,6 @@ export default {
       this.mark = "";
       this.frozen = false;
     });
-    this.$on("freeze", () => { this.frozen = true; });
   }
 };
 </script>

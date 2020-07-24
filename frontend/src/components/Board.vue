@@ -38,6 +38,7 @@ export default {
       activePlayer: 'O',
       token: '',
       gameStatus: 'turn',
+      gameStatusColor: '',
       gameStatusMessage: "O's turn",
       moves: 0,
       winConditions: [
@@ -122,6 +123,7 @@ export default {
       this.$emit('win', this.activePlayer);
       this.gameStatusMessage = `${this.activePlayer} Wins !`;
       this.$emit('freeze');
+      this.$store.commit('freezeSession');
       return 'win';
     },
     changeGameStatus() {

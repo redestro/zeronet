@@ -5,19 +5,10 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    freeze: false,
     token: '',
     gameMode: '',
-    cells: {
-      0: '',
-      1: '',
-      2: '',
-      3: '',
-      4: '',
-      5: '',
-      6: '',
-      7: '',
-      8: ''
-    }
+    cells: Array(9).fill('')
   },
   mutations: {
     updateToken(state, token) {
@@ -28,12 +19,26 @@ export default new Vuex.Store({
     },
     updateCells(state, payload) {
       state.cells[payload.cellNumbers] = payload.activePlayer;
+    },
+    startSession(state, token, gameMode) {
+        state.token = token;
+        state.gameMode = gameMode;
+    },
+    freezeSession(state) {
+      state.freeze = true;
+    },
+    endSession(state) {
+      state.freeze = false;
+      state.token = '';
+      state.gameMode = '';
+      state.cells.fill('');
     }
   },
   getters: {
     token: state => state.token,
     gameMode: state => state.gameMode,
-    cells: state => state.cells
+    cells: state => state.cells,
+    freeze: state => state.freeze
   },
   modules: {
   }
